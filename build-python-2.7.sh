@@ -54,15 +54,15 @@ cp -av /usr/local/openssl/lib/engines .
 ln -vsf libcrypto.so.1.0.0 libcrypto.so.6
 ln -vsf libssl.so.1.0.0 libssl.so.6
 
-cp -av /lib64/libdb-4.3.so .
-ln -vsf libdb-4.3.so libdb.so
-cp -av /usr/lib64/libreadline.so.5* .
-cp -av /usr/lib64/libbz2.so* .
-cp -av /lib64/libcrypt-2.5.so /lib64/libcrypt.so.1 .
-cp -av /usr/lib64/libgdbm.so* .
-cp -av /usr/lib64/libsqlite3.so* .
-cp -av /lib64/libz.so* .
-cp -av /usr/lib64/libncursesw.so* .
+find /usr -name 'libdb*.so' -exec cp -av {} . \;
+find /usr -name 'libreadline*.so*' -exec cp -av {} . \;
+find /usr -name 'libbz2*.so*' -exec cp -av {} . \;
+find /usr -name 'libcrypt*.so*' -exec cp -av {} . \;
+find /usr -name 'libgdbm*.so*' -exec cp -av {} . \;
+find /usr -name 'libsqlite*.so*' -exec cp -av {} . \;
+find /usr -name 'libz*.so*' -exec cp -av {} . \;
+find /usr -name 'libsqlite*.so*' -exec cp -av {} . \;
+find /usr -name 'libncursesw*.so*' -exec cp -av {} . \;
 
 find * -maxdepth 0 -name "*.so" -exec strip {} \;
 
