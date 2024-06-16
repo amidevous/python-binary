@@ -6,9 +6,28 @@ TARGET=/usr/local/python2.7
 TARGET_ARCHIVE_DIR=/app/build
 TARGET_ARCHIVE_PATH=${TARGET_ARCHIVE_DIR}/python2.7-x86-64.tar.gz
 
-yum groupinstall -y "Development tools"
 
-yum install -y wget zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel expat-devel
+#actual RHEL 8 + (and fork)/Fedroa 21 +
+if test -f "/usr/bin/dnf"; then
+    sudo dnf groupinstall -y "Development tools"
+    sudo dnf install -y wget zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel libdb-devel libpcap-devel xz-devel expat-devel
+fi
+#obsolete CentOS 6/7
+if test -f "/usr/bin/yum"; then
+    sudo yum groupinstall -y "Development tools"
+    sudo yum install -y wget zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel expat-devel
+fi
+#OpenSuse
+if test -f "/usr/bin/zypper"; then
+    sudo zypper install --type pattern devel_basis -y
+    sudo zypper install -y wget zlib-devel bzip2 bzip3-devel libopenssl-devel ncurses-devel sqlite3-devel readline-devel tk-devel gdbm-devel libdb-4_8-devel libpcap-devel xz-devel libexpat-devel
+fi
+#Ubuntu/Debian
+if test -f "/usr/bin/apt-get"; then
+    sudo zypper install --type pattern devel_basis -y
+    sudo apt-get install -y wget zlib1g-dev bzip2 lbzip2 librust-bzip2-dev librust-bzip2-sys-dev libssl-dev ncurses-base ncurses-bin libncurses-dev sqlite3 libsqlite3-dev readline-common libreadline-dev tk-dev libgdbm-dev libdb-dev libpcap-dev xz-utils libexpat1-dev
+fi
+
 
 cd /tmp
 wget --no-check-certificate https://www.openssl.org/source/openssl-1.0.2n.tar.gz
@@ -19,7 +38,7 @@ cd openssl-*
 mkdir -vp ${TARGET}
 
 cd /tmp
-wget --no-check-certificate https://www.python.org/ftp/python/2.7.14/Python-2.7.14.tgz
+wget --no-check-certificate https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz
 tar -xzf Python-*.tgz
 cd Python-*
 ./configure --prefix=${TARGET} --with-thread --enable-unicode=ucs4 --enable-shared --enable-ipv6 --with-system-expat --with-system-ffi --with-signal-module
