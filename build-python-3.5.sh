@@ -2,9 +2,11 @@
 
 set -xe
 
-TARGET=/usr/local/python3.5
+VERNIM=3.5
+VERS=3.5.10
+TARGET=/usr/local/python$VERNIM
 TARGET_ARCHIVE_DIR=/app/build
-TARGET_ARCHIVE_PATH=${TARGET_ARCHIVE_DIR}/python3.5-x86-64.tar.gz
+TARGET_ARCHIVE_PATH=${TARGET_ARCHIVE_DIR}/python$VERNIM-$(uname -m).tar.gz
 
 #actual RHEL 8 + (and fork)/Fedroa 21 +
 if test -f "/usr/bin/dnf"; then
@@ -38,24 +40,25 @@ sudo make install
 mkdir -vp ${TARGET}
 
 cd /tmp
-wget --no-check-certificate https://www.python.org/ftp/python/3.5.10/Python-3.5.10.tgz
+wget --no-check-certificate https://www.python.org/ftp/python/$VERS/Python-$VERS.tgz
 tar -xzf Python-*.tgz
 cd Python-*
 ./configure --prefix=${TARGET} --with-thread --enable-unicode=ucs4 --enable-shared --enable-ipv6 --with-system-expat --with-system-ffi --with-signal-module
 echo "SSL=/usr/local/openssl" > Modules/Setup.local
-make && make install
+make
+sudo make install
 
-rm -rf ${TARGET}/lib/python3.5/test
+sudo rm -rf ${TARGET}/lib/python$VERNIM/test
 
 cd ${TARGET}/lib
 
-cp -av /usr/local/openssl/lib/*so* .
-cp -av /usr/local/openssl/lib/engines .
-ln -vsf libcrypto.so.1.0.0 libcrypto.so.6
-ln -vsf libssl.so.1.0.0 libssl.so.6
+sudo cp -av /usr/local/openssl/lib/*so* .
+sudo cp -av /usr/local/openssl/lib/engines .
+sudo ln -vsf libcrypto.so.1.0.0 libcrypto.so.6
+sudo ln -vsf libssl.so.1.0.0 libssl.so.6
 
 
-find /usr -name 'libdb*.so' -exec cp -av {} . \;
+sudo find /usr -name 'libdb*.so' -exec cp -av {} . \;
 find /usr -name 'libreadline*.so*' -exec cp -av {} . \;
 find /usr -name 'libbz2*.so*' -exec cp -av {} . \;
 find /usr -name 'libcrypt*.so*' -exec cp -av {} . \;
@@ -83,4 +86,3 @@ mkdir -vp ${TARGET_ARCHIVE_DIR}
 rm -vf ${TARGET_ARCHIVE_PATH}
 
 tar -czf ${TARGET_ARCHIVE_PATH} ${TARGET}
-
