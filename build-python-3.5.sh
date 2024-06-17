@@ -10,12 +10,12 @@ TARGET_ARCHIVE_PATH=${TARGET_ARCHIVE_DIR}/python$VERNIM-$(uname -m).tar.gz
 
 #actual RHEL 8 + (and fork)/Fedroa 21 +
 if test -f "/usr/bin/dnf"; then
-    sudo dnf groupinstall -y "Development tools"
+    sudo dnf groupinstall -y "Development tools" "C Development Tools and Libraries"
     sudo dnf install -y wget zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel libdb-devel libpcap-devel xz-devel expat-devel
 fi
 #obsolete CentOS 6/7
 if test -f "/usr/bin/yum"; then
-    sudo yum groupinstall -y "Development tools"
+    sudo yum groupinstall -y "Development tools" "C Development Tools and Libraries"
     sudo yum install -y wget zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel expat-devel
 fi
 #OpenSuse
@@ -25,18 +25,33 @@ if test -f "/usr/bin/zypper"; then
 fi
 #Ubuntu/Debian
 if test -f "/usr/bin/apt-get"; then
-    sudo zypper install --type pattern devel_basis -y
+    sudo apt-get install debhelper cdbs lintian build-essential fakeroot devscripts dh-make dput -y
     sudo apt-get install -y wget zlib1g-dev bzip2 lbzip2 librust-bzip2-dev librust-bzip2-sys-dev libssl-dev ncurses-base ncurses-bin libncurses-dev sqlite3 libsqlite3-dev readline-common libreadline-dev tk-dev libgdbm-dev libdb-dev libpcap-dev xz-utils libexpat1-dev
+fi
+#apt-cyg for Cygwin (windows]
+if test -f "/usr/bin/wget.exe"; then
+    if [[ $(uname -m) == x86_64 ]]; then
+        wget "https://cygwin.com/setup-x86_64.exe" -O setup-x86_64.exe
+        setup-x86_64.exe -P "autoconf,automake,binutils,bison,flex,gcc-core,gcc-g++,libgdbm-devel,libc++-devel,libtool,make,pkgconf,gettext,gettext-devel,doxygen,git,patch,patchutils,subversion,wget,zlib-devel,bzip2,lbzip2,libssl-devel,linncurses-devel,sqlite3,libsqlite3-devel,libreadline-devel,libfltk-devel,libdb-devel,xz,libexpat-devel" -q -R $(cygpath -w /) --only-site https://mirrors.163.com/cygwin/
+        rm -f setup-x86_64.exe
+    else
+        wget "https://cygwin.com/setup-x86.exe -O setup-x86.exe
+        setup-x86.exe -P "autoconf,automake,binutils,bison,flex,gcc-core,gcc-g++,libgdbm-devel,libc++-devel,libtool,make,pkgconf,gettext,gettext-devel,doxygen,git,patch,patchutils,subversion,wget,zlib-devel,bzip2,lbzip2,libssl-devel,linncurses-devel,sqlite3,libsqlite3-devel,libreadline-devel,libfltk-devel,libdb-devel,xz,libexpat-devel" -q -R $(cygpath -w /) --no-verify --allow-unsupported-windows --only-site https://mirrors.kernel.org/sourceware/cygwin-archive/20221123
+        rm -f setup-x86.exe
+    fi
 fi
 
 cd /tmp
 wget --no-check-certificate https://www.openssl.org/source/openssl-1.0.2n.tar.gz
 tar -xzf openssl-*.tar.gz
-cd openssl-*
+cd openssl-1.0.2n
 ./config --prefix=/usr/local/openssl shared
 make
-sudo make install
-
+if test -f "/usr/bin/wget.exe"; then
+    make install
+else
+    sudo make install
+fi
 mkdir -vp ${TARGET}
 
 cd /tmp
@@ -46,29 +61,50 @@ cd Python-*
 ./configure --prefix=${TARGET} --with-thread --enable-unicode=ucs4 --enable-shared --enable-ipv6 --with-system-expat --with-system-ffi --with-signal-module
 echo "SSL=/usr/local/openssl" > Modules/Setup.local
 make
-sudo make install
-
-sudo rm -rf ${TARGET}/lib/python$VERNIM/test
-
-cd ${TARGET}/lib
-
-sudo cp -av /usr/local/openssl/lib/*so* .
-sudo cp -av /usr/local/openssl/lib/engines .
-sudo ln -vsf libcrypto.so.1.0.0 libcrypto.so.6
-sudo ln -vsf libssl.so.1.0.0 libssl.so.6
+if test -f "/usr/bin/wget.exe"; then
+    make install
+    rm -rf ${TARGET}/lib/python$VERNIM/test
+    cd ${TARGET}/lib
+    cp -av /usr/local/openssl/lib/*dll* .
+    cp -av /usr/local/openssl/lib/engines .
+    ln -vsf libcrypto.dll.1.0.0 libcrypto.dll.6
+    ln -vsf libssl.dll.1.0.0 libssl.dll.6
 
 
-sudo find /usr -name 'libdb*.so' -exec cp -av {} . \;
-find /usr -name 'libreadline*.so*' -exec cp -av {} . \;
-find /usr -name 'libbz2*.so*' -exec cp -av {} . \;
-find /usr -name 'libcrypt*.so*' -exec cp -av {} . \;
-find /usr -name 'libgdbm*.so*' -exec cp -av {} . \;
-find /usr -name 'libsqlite*.so*' -exec cp -av {} . \;
-find /usr -name 'libz*.so*' -exec cp -av {} . \;
-find /usr -name 'libsqlite*.so*' -exec cp -av {} . \;
-find /usr -name 'libncursesw*.so*' -exec cp -av {} . \;
+    find /usr -name 'libdb*.dll' -exec cp -av {} . \;
+    find /usr -name 'libreadline*.dll*' -exec cp -av {} . \;
+    find /usr -name 'libbz2*.dll*' -exec cp -av {} . \;
+    find /usr -name 'libcrypt*.dll*' -exec cp -av {} . \;
+    find /usr -name 'libgdbm*.dll*' -exec cp -av {} . \;
+    find /usr -name 'libsqlite*.dll*' -exec cp -av {} . \;
+    find /usr -name 'libz*.dll*' -exec cp -av {} . \;
+    find /usr -name 'libsqlite*.dll*' -exec cp -av {} . \;
+    find /usr -name 'libncursesw*.dll*' -exec cp -av {} . \;
 
-find * -maxdepth 0 -name "*.so" -exec strip {} \;
+    find * -maxdepth 0 -name "*.dll" -exec strip {} \;
+else
+    sudo make install
+    sudo rm -rf ${TARGET}/lib/python$VERNIM/test
+    cd ${TARGET}/lib
+    sudo cp -av /usr/local/openssl/lib/*so* .
+    sudo cp -av /usr/local/openssl/lib/engines .
+    sudo ln -vsf libcrypto.so.1.0.0 libcrypto.so.6
+    sudo ln -vsf libssl.so.1.0.0 libssl.so.6
+
+
+    sudo find /usr -name 'libdb*.so' -exec cp -av {} . \;
+    sudo /usr -name 'libreadline*.so*' -exec cp -av {} . \;
+    sudo find /usr -name 'libbz2*.so*' -exec cp -av {} . \;
+    sudo find /usr -name 'libcrypt*.so*' -exec cp -av {} . \;
+    sudo find /usr -name 'libgdbm*.so*' -exec cp -av {} . \;
+    sudo find /usr -name 'libsqlite*.so*' -exec cp -av {} . \;
+    sudo find /usr -name 'libz*.so*' -exec cp -av {} . \;
+    sudo find /usr -name 'libsqlite*.so*' -exec cp -av {} . \;
+    sudo find /usr -name 'libncursesw*.so*' -exec cp -av {} . \;
+
+    sudo find * -maxdepth 0 -name "*.so" -exec strip {} \;
+fi
+
 
 #wget https://bootstrap.pypa.io/get-pip.py
 
