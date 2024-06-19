@@ -28,16 +28,28 @@ if test -f "/usr/bin/apt-get"; then
     sudo apt-get install debhelper cdbs lintian build-essential fakeroot devscripts dh-make dput -y
     sudo apt-get install -y wget zlib1g-dev bzip2 lbzip2 librust-bzip2-dev librust-bzip2-sys-dev libssl-dev ncurses-base ncurses-bin libncurses-dev sqlite3 libsqlite3-dev readline-common libreadline-dev tk-dev libgdbm-dev libdb-dev libpcap-dev xz-utils libexpat1-dev
 fi
-#apt-cyg for Cygwin (windows]
+#for Cygwin (windows)
 if test -f "/usr/bin/wget.exe"; then
     if [[ $(uname -m) == x86_64 ]]; then
         wget "https://cygwin.com/setup-x86_64.exe" -O setup-x86_64.exe
-        setup-x86_64.exe -P "autoconf,automake,binutils,bison,flex,gcc-core,gcc-g++,libgdbm-devel,libc++-devel,libtool,make,pkgconf,gettext,gettext-devel,doxygen,git,patch,patchutils,subversion,wget,zlib-devel,bzip2,lbzip2,libssl-devel,linncurses-devel,sqlite3,libsqlite3-devel,libreadline-devel,libfltk-devel,libdb-devel,xz,libexpat-devel" -q -R $(cygpath -w /) --only-site https://mirrors.163.com/cygwin/
+        chmod +x setup-x86_64.exe
+        ./setup-x86_64.exe -P "autoconf,automake,binutils,bison,flex,gcc-core,gcc-g++,libgdbm-devel,libc++-devel,libtool,make,pkgconf,gettext,gettext-devel,doxygen,git,patch,patchutils,subversion,wget,zlib-devel,bzip2,lbzip2,libssl-devel,linncurses-devel,sqlite3,libsqlite3-devel,libreadline-devel,libfltk-devel,libdb-devel,xz,libexpat-devel" -q -R $(cygpath -w /) -l $(cygpath -w /)\var\cache\apt\packages --no-shortcuts --no-startmenu --arch x86_64 --no-write-registry --only-site --site https://mirrors.kernel.org/sourceware/cygwin/
         rm -f setup-x86_64.exe
+cat > /usr/bin/sudo <<EOF
+echo "sudo command not found for cygwin"
+\$@
+EOF
+        chmod +x /usr/bin/sudo
     else
-        wget "https://cygwin.com/setup-x86.exe -O setup-x86.exe
-        setup-x86.exe -P "autoconf,automake,binutils,bison,flex,gcc-core,gcc-g++,libgdbm-devel,libc++-devel,libtool,make,pkgconf,gettext,gettext-devel,doxygen,git,patch,patchutils,subversion,wget,zlib-devel,bzip2,lbzip2,libssl-devel,linncurses-devel,sqlite3,libsqlite3-devel,libreadline-devel,libfltk-devel,libdb-devel,xz,libexpat-devel" -q -R $(cygpath -w /) --no-verify --allow-unsupported-windows --only-site https://mirrors.kernel.org/sourceware/cygwin-archive/20221123
+        wget "https://cygwin.com/setup-x86.exe" -O setup-x86.exe
+        chmod +x setup-x86.exe
+        ./setup-x86.exe -P "autoconf,automake,binutils,bison,flex,gcc-core,gcc-g++,libgdbm-devel,libc++-devel,libtool,make,pkgconf,gettext,gettext-devel,doxygen,git,patch,patchutils,subversion,wget,zlib-devel,bzip2,lbzip2,libssl-devel,linncurses-devel,sqlite3,libsqlite3-devel,libreadline-devel,libfltk-devel,libdb-devel,xz,libexpat-devel" -q -R $(cygpath -w /) -l $(cygpath -w /)\var\cache\apt\packages --no-shortcuts --no-startmenu --arch x86 --no-write-registry --no-verify --allow-unsupported-windows --only-site --site https://mirrors.kernel.org/sourceware/cygwin-archive/20221123/
         rm -f setup-x86.exe
+cat > /usr/bin/sudo <<EOF
+echo "sudo command not found for cygwin"
+\$@
+EOF
+        chmod +x /usr/bin/sudo
     fi
 fi
 
@@ -47,11 +59,7 @@ tar -xzf openssl-*.tar.gz
 cd openssl-1.0.2n
 ./config --prefix=/usr/local/openssl shared
 make
-if test -f "/usr/bin/wget.exe"; then
-    make install
-else
-    sudo make install
-fi
+sudo make install
 mkdir -vp ${TARGET}
 
 cd /tmp
@@ -109,19 +117,16 @@ fi
 #wget https://bootstrap.pypa.io/get-pip.py
 
 cd ${TARGET}/bin
-ln -svf python3 python
+sudo ln -svf python3 python
 
-LD_LIBRARY_PATH=${TARGET}/lib ${TARGET}/bin/python /app/get-pip.py
+sudo LD_LIBRARY_PATH=${TARGET}/lib ${TARGET}/bin/python /app/get-pip.py
 
-ln -svf pip3 pip
+sudo ln -svf pip3 pip
 
-LD_LIBRARY_PATH=${TARGET}/lib ${TARGET}/bin/pip install virtualenv
+sudo LD_LIBRARY_PATH=${TARGET}/lib ${TARGET}/bin/pip install virtualenv
 
-mkdir -vp ${TARGET_ARCHIVE_DIR}
+sudo mkdir -vp ${TARGET_ARCHIVE_DIR}
 
-rm -vf ${TARGET_ARCHIVE_PATH}
+sudo rm -vf ${TARGET_ARCHIVE_PATH}
 
-tar -czf ${TARGET_ARCHIVE_PATH} ${TARGET}
-
-tar -czf ${TARGET_ARCHIVE_PATH} ${TARGET}
-
+sudo tar -czf ${TARGET_ARCHIVE_PATH} ${TARGET}
