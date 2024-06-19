@@ -119,11 +119,12 @@ fi
 cd ${TARGET}/bin
 sudo ln -svf python2 python
 
-sudo LD_LIBRARY_PATH=${TARGET}/lib ${TARGET}/bin/python /app/get-pip.py
+export LD_LIBRARY_PATH=${TARGET}/lib
+sudo ${TARGET}/bin/python /app/get-pip.py
 
 sudo ln -svf pip2 pip
 
-sudo LD_LIBRARY_PATH=${TARGET}/lib ${TARGET}/bin/pip install virtualenv
+sudo ${TARGET}/bin/pip install virtualenv
 
 sudo mkdir -vp ${TARGET_ARCHIVE_DIR}
 
