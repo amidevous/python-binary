@@ -64,8 +64,8 @@ mkdir -vp ${TARGET}
 
 cd /tmp
 wget --no-check-certificate https://www.python.org/ftp/python/$VERS/Python-$VERS.tgz
-tar -xzf Python-*.tgz
-cd Python-*
+tar -xzf Python-$VERS.tgz
+cd Python-$VERS
 ./configure --prefix=${TARGET} --with-thread --enable-unicode=ucs4 --enable-shared --enable-ipv6 --with-system-expat --with-system-ffi --with-signal-module
 echo "SSL=/usr/local/openssl" > Modules/Setup.local
 make
