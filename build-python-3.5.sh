@@ -32,11 +32,11 @@ fi
 if test -f "/usr/bin/wget.exe"; then
     if [[ $(uname -m) == x86_64 ]]; then
         wget "https://cygwin.com/setup-x86_64.exe" -O setup-x86_64.exe
-        setup-x86_64.exe -P "autoconf,automake,binutils,bison,flex,gcc-core,gcc-g++,libgdbm-devel,libc++-devel,libtool,make,pkgconf,gettext,gettext-devel,doxygen,git,patch,patchutils,subversion,wget,zlib-devel,bzip2,lbzip2,libssl-devel,linncurses-devel,sqlite3,libsqlite3-devel,libreadline-devel,libfltk-devel,libdb-devel,xz,libexpat-devel" -q -R $(cygpath -w /) --only-site https://mirrors.163.com/cygwin/
+        setup-x86_64.exe -P "autoconf,automake,binutils,bison,flex,gcc-core,gcc-g++,libgdbm-devel,libc++-devel,libtool,make,pkgconf,gettext,gettext-devel,doxygen,git,patch,patchutils,subversion,wget,zlib-devel,bzip2,lbzip2,libssl-devel,linncurses-devel,sqlite3,libsqlite3-devel,libreadline-devel,libfltk-devel,libdb-devel,xz,libexpat-devel" -q -R $(cygpath -w /) -l $(cygpath -w /)\var\cache\apt\packages --no-shortcuts --no-startmenu --arch x86_64 --no-write-registry --only-site --site https://mirrors.kernel.org/sourceware/cygwin/
         rm -f setup-x86_64.exe
     else
         wget "https://cygwin.com/setup-x86.exe -O setup-x86.exe
-        setup-x86.exe -P "autoconf,automake,binutils,bison,flex,gcc-core,gcc-g++,libgdbm-devel,libc++-devel,libtool,make,pkgconf,gettext,gettext-devel,doxygen,git,patch,patchutils,subversion,wget,zlib-devel,bzip2,lbzip2,libssl-devel,linncurses-devel,sqlite3,libsqlite3-devel,libreadline-devel,libfltk-devel,libdb-devel,xz,libexpat-devel" -q -R $(cygpath -w /) --no-verify --allow-unsupported-windows --only-site https://mirrors.kernel.org/sourceware/cygwin-archive/20221123
+        setup-x86.exe -P "autoconf,automake,binutils,bison,flex,gcc-core,gcc-g++,libgdbm-devel,libc++-devel,libtool,make,pkgconf,gettext,gettext-devel,doxygen,git,patch,patchutils,subversion,wget,zlib-devel,bzip2,lbzip2,libssl-devel,linncurses-devel,sqlite3,libsqlite3-devel,libreadline-devel,libfltk-devel,libdb-devel,xz,libexpat-devel" -q -R $(cygpath -w /) -l $(cygpath -w /)\var\cache\apt\packages --no-shortcuts --no-startmenu --arch x86 --no-write-registry --no-verify --allow-unsupported-windows --only-site --site https://mirrors.kernel.org/sourceware/cygwin-archive/20221123
         rm -f setup-x86.exe
     fi
 fi
