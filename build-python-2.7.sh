@@ -70,7 +70,7 @@ cd Python-$VERS
 echo "SSL=/usr/local/openssl" > Modules/Setup.local
 make
 if test -f "/usr/bin/wget.exe"; then
-    make install
+    make altinstall
     rm -rf ${TARGET}/lib/python$VERNIM/test
     cd ${TARGET}/lib
     cp -av /usr/local/openssl/lib/*dll* .
@@ -91,7 +91,7 @@ if test -f "/usr/bin/wget.exe"; then
 
     find * -maxdepth 0 -name "*.dll" -exec strip {} \;
 else
-    sudo make install
+    sudo make altinstall
     sudo rm -rf ${TARGET}/lib/python$VERNIM/test
     cd ${TARGET}/lib
     sudo cp -av /usr/local/openssl/lib/*so* .
