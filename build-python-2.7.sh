@@ -114,13 +114,13 @@ else
 fi
 
 
-#wget https://bootstrap.pypa.io/get-pip.py
 
 cd ${TARGET}/bin
+wget https://bootstrap.pypa.io/pip/2.7/get-pip.py -O get-pip.py
 sudo ln -svf python2 python
 
 export LD_LIBRARY_PATH=${TARGET}/lib
-sudo ${TARGET}/bin/python /app/get-pip.py
+sudo ${TARGET}/bin/python get-pip.py
 
 sudo ln -svf pip2 pip
 
