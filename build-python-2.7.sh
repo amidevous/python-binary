@@ -20,7 +20,7 @@ if test -f "/usr/bin/yum"; then
     sudo yum install -y yum-utils wget ca-certificates zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel expat-devel
     # security update rhel 6 backport to CentOS 6 ca-certificate 2021
     if [[ $(rpm -q ca-certificates) != "ca-certificates-2023.2.60_v7.0.306-72.el7_9.noarch" || $(rpm -q ca-certificates) != "ca-certificates-2020.2.41-65.1.el6.noarch"  ]]; then
-        sudo yum -y install asciidoc libxslt java-devel libtasn1-devel libffi-devel gtk-doc lksctp-tools-devel db4-devel tcsh systemtap-sdt-devel chrpath
+        sudo yum -y install asciidoc java-1.6.0-openjdk libxslt java-devel libtasn1-devel libffi-devel gtk-doc lksctp-tools-devel db4-devel tcsh systemtap-sdt-devel chrpath
         rpmbuild --rebuild https://ftp.redhat.com/redhat/linux/enterprise/6Server/en/os/SRPMS/ca-certificates-2020.2.41-65.1.el6_10.src.rpm
         find $(rpm --eval '%_rpmdir') -name 'ca-certificates*.noarch.rpm' -exec sudo yum -y install {} \;
         find $(rpm --eval '%_topdir') -name '*ca-certificates*' -exec rm -rf {} \;
