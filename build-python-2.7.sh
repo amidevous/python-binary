@@ -23,7 +23,7 @@ if test -f "/usr/bin/yum"; then
         sudo yum -y install asciidoc java-1.6.0-openjdk libxslt java-devel libtasn1-devel libffi-devel gtk-doc lksctp-tools-devel db4-devel tcsh systemtap-sdt-devel chrpath
         rpmbuild --rebuild https://ftp.redhat.com/redhat/linux/enterprise/6Server/en/os/SRPMS/ca-certificates-2020.2.41-65.1.el6_10.src.rpm
         find $(rpm --eval '%_rpmdir') -name 'ca-certificates*.noarch.rpm' -exec sudo yum -y install {} \;
-        find $(rpm --eval '%_topdir') -name '*ca-certificates*' -exec rm -rf {} \;
+        find $(rpm --eval '%_topdir') -name '*ca-certificates*' -exec rm -rf {} >/dev/null 2>&1 \; >/dev/null 2>&1
         rm -f ca-certificates-2020.2.41-65.1.el6_10.src.rpm
     fi
     wget https://git.centos.org/rpms/python27-python/raw/c7/f/SPECS/python.spec -O python.spec
