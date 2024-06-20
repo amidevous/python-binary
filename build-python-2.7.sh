@@ -162,24 +162,24 @@ wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00169-avoid-im
 wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00170-gc-assertions.patch -O /tmp/00170-gc-assertions.patch
 wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00173-workaround-ENOPROTOOPT-in-bind_port.patch -O /tmp/00173-workaround-ENOPROTOOPT-in-bind_port.patch
 wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00174-fix-for-usr-move.patch -O /tmp/00174-fix-for-usr-move.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00180-python-add-support-for-ppc64p7.patch -O /tmp/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00181-allow-arbitrary-timeout-in-condition-wait.patch -O /tmp/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00185-urllib2-honors-noproxy-for-ftp.patch -O /tmp/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00187-add-RPATH-to-pyexpat.patch -O /tmp/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00191-disable-NOOP.patch -O /tmp/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00198-add-rewheel-module.patch -O /tmp/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00224-PEP-493-Re-add-file-based-configuration-of-HTTPS-ver.patch -O /tmp/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00351-cve-2019-20907-fix-infinite-loop-in-tarfile.patch -O /tmp/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00354-cve-2020-26116-http-request-method-crlf-injection-in-httplib.patch -O /tmp/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00355-CVE-2020-27619.patch -O /tmp/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00357-CVE-2021-3177.patch -O /tmp/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00359-CVE-2021-23336.patch -O /tmp/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00366-CVE-2021-3733.patch -O /tmp/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00368-CVE-2021-3737.patch -O /tmp/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00372-CVE-2021-4189.patch -O /tmp/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00377-CVE-2022-0391.patch -O /tmp/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00378-support-expat-2-4-5.patch -O /tmp/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/05000-autotool-intermediates.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00180-python-add-support-for-ppc64p7.patch -O /tmp/00180-python-add-support-for-ppc64p7.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00181-allow-arbitrary-timeout-in-condition-wait.patch -O /tmp/00181-allow-arbitrary-timeout-in-condition-wait.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00185-urllib2-honors-noproxy-for-ftp.patch -O /tmp/00185-urllib2-honors-noproxy-for-ftp.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00187-add-RPATH-to-pyexpat.patch -O /tmp/00187-add-RPATH-to-pyexpat.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00191-disable-NOOP.patch -O /tmp/00191-disable-NOOP.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00198-add-rewheel-module.patch -O /tmp/00198-add-rewheel-module.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00224-PEP-493-Re-add-file-based-configuration-of-HTTPS-ver.patch -O /tmp/00224-PEP-493-Re-add-file-based-configuration-of-HTTPS-ver.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00351-cve-2019-20907-fix-infinite-loop-in-tarfile.patch -O /tmp/00351-cve-2019-20907-fix-infinite-loop-in-tarfile.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00354-cve-2020-26116-http-request-method-crlf-injection-in-httplib.patch -O /tmp/00354-cve-2020-26116-http-request-method-crlf-injection-in-httplib.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00355-CVE-2020-27619.patch -O /tmp/00355-CVE-2020-27619.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00357-CVE-2021-3177.patch -O /tmp/00357-CVE-2021-3177.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00359-CVE-2021-23336.patch -O /tmp/00359-CVE-2021-23336.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00366-CVE-2021-3733.patch -O /tmp/00366-CVE-2021-3733.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00368-CVE-2021-3737.patch -O /tmp/00368-CVE-2021-3737.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00372-CVE-2021-4189.patch -O /tmp/00372-CVE-2021-4189.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00377-CVE-2022-0391.patch -O /tmp/00377-CVE-2022-0391.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00378-support-expat-2-4-5.patch -O /tmp/00378-support-expat-2-4-5.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/05000-autotool-intermediates.patch -O /tmp/05000-autotool-intermediates.patch
 cd /tmp/Python-$VERS
 patch -p1 </tmp/
 rm -rf /tmp/
