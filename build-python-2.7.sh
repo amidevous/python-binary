@@ -11,12 +11,24 @@ TARGET_ARCHIVE_PATH=${TARGET_ARCHIVE_DIR}/python$VERNIM-$(uname -m).tar.gz
 #actual RHEL 8 + (and fork)/Fedroa 21 +
 if test -f "/usr/bin/dnf"; then
     sudo dnf groupinstall -y "Development tools" "C Development Tools and Libraries"
-    sudo dnf install -y wget zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel libdb-devel libpcap-devel xz-devel expat-devel
+    sudo dnf install -y dnf-utils wget zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel libdb-devel libpcap-devel xz-devel expat-devel
+    sudo dnf build-dep -y https://git.centos.org/rpms/python27-python/raw/c7/f/SPECS/python.spec
 fi
 #obsolete CentOS 6/7
 if test -f "/usr/bin/yum"; then
     sudo yum groupinstall -y "Development tools" "C Development Tools and Libraries"
-    sudo yum install -y wget zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel expat-devel
+    sudo yum install -y yum-utils wget ca-certificates zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel expat-devel
+    # security update rhel 6 backport to CentOS 6 ca-certificate 2021
+    if [[ $(rpm -q ca-certificates) != "ca-certificates-2023.2.60_v7.0.306-72.el7_9.noarch" || $(rpm -q ca-certificates) != "ca-certificates-2020.2.41-65.1.el6.noarch"  ]]; then
+        sudo yum -y install asciidoc libxslt java-devel libtasn1-devel libffi-devel gtk-doc lksctp-tools-devel db4-devel tcsh systemtap-sdt-devel chrpath
+        rpmbuild --rebuild https://ftp.redhat.com/redhat/linux/enterprise/6Server/en/os/SRPMS/ca-certificates-2020.2.41-65.1.el6_10.src.rpm
+        find $(rpm --eval '%_rpmdir') -name 'ca-certificates*.noarch.rpm' -exec sudo yum -y install {} \;
+        find $(rpm --eval '%_topdir') -name '*ca-certificates*' -exec rm -rf {} \;
+        rm -f ca-certificates-2020.2.41-65.1.el6_10.src.rpm
+    fi
+    wget https://git.centos.org/rpms/python27-python/raw/c7/f/SPECS/python.spec -O python.spec
+    sudo yum-builddep -y python.spec
+    rm -f python.spec
 fi
 #OpenSuse
 if test -f "/usr/bin/zypper"; then
@@ -54,18 +66,129 @@ EOF
 fi
 
 cd /tmp
-wget --no-check-certificate https://www.openssl.org/source/openssl-1.0.2n.tar.gz
-tar -xzf openssl-*.tar.gz
-cd openssl-1.0.2n
+wget https://www.openssl.org/source/openssl-1.0.2n.tar.gz -O /tmp/openssl-1.0.2n.tar.gz
+tar -xzf /tmp/openssl-1.0.2n.tar.gz
+rm -f /tmp/openssl-1.0.2n.tar.gz
+cd /tmp/openssl-1.0.2n
 ./config --prefix=/usr/local/openssl shared
 make
 sudo make install
 mkdir -vp ${TARGET}
 
 cd /tmp
-wget --no-check-certificate https://www.python.org/ftp/python/$VERS/Python-$VERS.tgz
-tar -xzf Python-$VERS.tgz
-cd Python-$VERS
+rm -rf /tmp/openssl-1.0.2n
+wget https://www.python.org/ftp/python/$VERS/Python-$VERS.tgz -O /tmp/Python-$VERS.tgz
+rm -rf /tmp/Python-$VERS
+tar -xzf /tmp/Python-$VERS.tgz
+rm -f /tmp/Python-$VERS.tgz
+if test -f "/usr/bin/wget.exe"; then
+wget https://www.cygwin.com/cgit/cygwin-packages/python2/plain/2.5.2-ctypes-util-find_library.patch -O /tmp/2.5.2-ctypes-util-find_library.patch
+wget https://www.cygwin.com/cgit/cygwin-packages/python2/plain/2.5.2-tkinter-x11.patch -O /tmp/2.5.2-tkinter-x11.patch
+wget https://www.cygwin.com/cgit/cygwin-packages/python2/plain/2.6.5-FD_SETSIZE.patch -O /tmp/2.6.5-FD_SETSIZE.patch
+wget https://www.cygwin.com/cgit/cygwin-packages/python2/plain/2.6.5-export-PySignal_SetWakeupFd.patch -O /tmp/2.6.5-export-PySignal_SetWakeupFd.patch
+wget https://www.cygwin.com/cgit/cygwin-packages/python2/plain/2.6.5-ncurses-abi6.patch -O /tmp/2.6.5-ncurses-abi6.patch
+wget https://www.cygwin.com/cgit/cygwin-packages/python2/plain/2.7.13-ftm.patch -O /tmp/2.7.13-ftm.patch
+wget https://www.cygwin.com/cgit/cygwin-packages/python2/plain/2.7.17-use-rpm-wheels.patch -O /tmp/2.7.17-use-rpm-wheels.patch
+wget https://www.cygwin.com/cgit/cygwin-packages/python2/plain/2.7.18-socketmodule.patch -O /tmp/2.7.18-socketmodule.patch
+wget https://www.cygwin.com/cgit/cygwin-packages/python2/plain/2.7.3-dbm.patch -O /tmp/2.7.3-dbm.patch
+wget https://www.cygwin.com/cgit/cygwin-packages/python2/plain/2.7.3-dylib.patch -O /tmp/2.7.3-dylib.patch
+wget https://www.cygwin.com/cgit/cygwin-packages/python2/plain/2.7.3-getpath-exe-extension.patch -O /tmp/2.7.3-getpath-exe-extension.patch
+wget https://www.cygwin.com/cgit/cygwin-packages/python2/plain/2.7.3-no-libm.patch -O /tmp/2.7.3-no-libm.patch
+cd /tmp/Python-$VERS
+
+
+
+
+patch -p2 </tmp/2.5.2-ctypes-util-find_library.patch
+rm -rf /tmp/2.5.2-ctypes-util-find_library.patch
+patch -p2 </tmp/2.5.2-tkinter-x11.patch
+rm -rf /tmp/2.5.2-tkinter-x11.patch
+patch -p1 </tmp/2.6.5-FD_SETSIZE.patch
+rm -rf /tmp/2.6.5-FD_SETSIZE.patch
+patch -p2 </tmp/2.6.5-export-PySignal_SetWakeupFd.patch
+rm -rf /tmp/2.6.5-export-PySignal_SetWakeupFd.patch
+patch -p2 </tmp/2.6.5-ncurses-abi6.patch
+rm -rf /tmp/2.6.5-ncurses-abi6.patch
+rm -f setup.py.orig
+patch -p2 -f </tmp/2.7.3-dbm.patch setup.py
+rm -rf /tmp/2.7.3-dbm.patch
+patch -p2 -f </tmp/2.7.3-dylib.patch Lib/distutils/unixccompiler.py
+rm -rf /tmp/2.7.3-dylib.patch
+patch -p2 -f </tmp/2.7.3-getpath-exe-extension.patch Modules/getpath.c
+rm -rf /tmp/2.7.3-getpath-exe-extension.patch
+patch -p2 -f </tmp/2.7.3-no-libm.patch setup.py
+rm -rf /tmp/2.7.3-no-libm.patch
+patch -p2 </tmp/2.7.13-ftm.patch
+rm -rf /tmp/2.7.13-ftm.patch
+patch -p2 </tmp/2.7.17-use-rpm-wheels.patch
+rm -rf /tmp/2.7.17-use-rpm-wheels.patch
+patch -p2 </tmp/2.7.18-socketmodule.patch
+rm -rf /tmp/2.7.18-socketmodule.patch
+else
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7.1-config.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00001-pydocnogui.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.5-cflags.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.5.1-plural-fix.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.5.1-sqlite-encoding.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7rc1-binutils-no-dep.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7rc1-socketmodule-constants.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.6-rpath.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.6.4-distutils-rpath.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00055-systemtap.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7.3-lib64.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7-lib64-sysconfig.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00104-lib64-fix-for-test_install.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00111-no-static-lib.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7.3-debug-build.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00113-more-configuration-flags.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00114-statvfs-f_flag-constants.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00121-add-Modules-to-build-path.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7.2-add-extension-suffix-to-python-config.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00131-disable-tests-in-test_io.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00132-add-rpmbuild-hooks-to-unittest.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00133-skip-test_dl.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00135-skip-test-within-test_weakref-in-debug-build.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00136-skip-tests-of-seeking-stdin-in-rpmbuild.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00137-skip-distutils-tests-that-fail-in-rpmbuild.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00138-fix-distutils-tests-in-debug-build.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00139-skip-test_float-known-failure-on-arm.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00140-skip-test_ctypes-known-failure-on-sparc.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00142-skip-failing-pty-tests-in-rpmbuild.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00143-tsc-on-ppc.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00144-no-gdbm.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00146-hashlib-fips.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00147-add-debug-malloc-stats.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00155-avoid-ctypes-thunks.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00156-gdb-autoload-safepath.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00165-crypt-module-salt-backport.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00167-disable-stack-navigation-tests-when-optimized-in-test_gdb.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00169-avoid-implicit-usage-of-md5-in-multiprocessing.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00170-gc-assertions.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00173-workaround-ENOPROTOOPT-in-bind_port.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00174-fix-for-usr-move.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00180-python-add-support-for-ppc64p7.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00181-allow-arbitrary-timeout-in-condition-wait.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00185-urllib2-honors-noproxy-for-ftp.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00187-add-RPATH-to-pyexpat.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00191-disable-NOOP.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00198-add-rewheel-module.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00224-PEP-493-Re-add-file-based-configuration-of-HTTPS-ver.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00351-cve-2019-20907-fix-infinite-loop-in-tarfile.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00354-cve-2020-26116-http-request-method-crlf-injection-in-httplib.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00355-CVE-2020-27619.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00357-CVE-2021-3177.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/
+cd /tmp/Python-$VERS
+patch -p1 </tmp/
+rm -rf /tmp/
+patch -p1 </tmp/
+rm -rf /tmp/
+fi
 ./configure --prefix=${TARGET} --with-thread --enable-unicode=ucs4 --enable-shared --enable-ipv6 --with-system-expat --with-system-ffi --with-signal-module
 echo "SSL=/usr/local/openssl" > Modules/Setup.local
 make
@@ -116,6 +239,7 @@ fi
 
 
 cd ${TARGET}/bin
+rm -rf /tmp/Python-$VERS
 wget https://bootstrap.pypa.io/pip/2.7/get-pip.py -O get-pip.py
 sudo ln -svf python2 python
 
