@@ -95,10 +95,6 @@ wget https://www.cygwin.com/cgit/cygwin-packages/python2/plain/2.7.3-dylib.patch
 wget https://www.cygwin.com/cgit/cygwin-packages/python2/plain/2.7.3-getpath-exe-extension.patch -O /tmp/2.7.3-getpath-exe-extension.patch
 wget https://www.cygwin.com/cgit/cygwin-packages/python2/plain/2.7.3-no-libm.patch -O /tmp/2.7.3-no-libm.patch
 cd /tmp/Python-$VERS
-
-
-
-
 patch -p2 </tmp/2.5.2-ctypes-util-find_library.patch
 rm -rf /tmp/2.5.2-ctypes-util-find_library.patch
 patch -p2 </tmp/2.5.2-tkinter-x11.patch
@@ -125,64 +121,65 @@ rm -rf /tmp/2.7.17-use-rpm-wheels.patch
 patch -p2 </tmp/2.7.18-socketmodule.patch
 rm -rf /tmp/2.7.18-socketmodule.patch
 else
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7.1-config.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00001-pydocnogui.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.5-cflags.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.5.1-plural-fix.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.5.1-sqlite-encoding.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7rc1-binutils-no-dep.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7rc1-socketmodule-constants.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.6-rpath.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.6.4-distutils-rpath.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00055-systemtap.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7.3-lib64.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7-lib64-sysconfig.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00104-lib64-fix-for-test_install.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00111-no-static-lib.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7.3-debug-build.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00113-more-configuration-flags.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00114-statvfs-f_flag-constants.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00121-add-Modules-to-build-path.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7.2-add-extension-suffix-to-python-config.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00131-disable-tests-in-test_io.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00132-add-rpmbuild-hooks-to-unittest.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00133-skip-test_dl.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00135-skip-test-within-test_weakref-in-debug-build.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00136-skip-tests-of-seeking-stdin-in-rpmbuild.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00137-skip-distutils-tests-that-fail-in-rpmbuild.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00138-fix-distutils-tests-in-debug-build.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00139-skip-test_float-known-failure-on-arm.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00140-skip-test_ctypes-known-failure-on-sparc.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00142-skip-failing-pty-tests-in-rpmbuild.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00143-tsc-on-ppc.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00144-no-gdbm.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00146-hashlib-fips.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00147-add-debug-malloc-stats.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00155-avoid-ctypes-thunks.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00156-gdb-autoload-safepath.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00165-crypt-module-salt-backport.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00167-disable-stack-navigation-tests-when-optimized-in-test_gdb.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00169-avoid-implicit-usage-of-md5-in-multiprocessing.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00170-gc-assertions.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00173-workaround-ENOPROTOOPT-in-bind_port.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00174-fix-for-usr-move.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00180-python-add-support-for-ppc64p7.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00181-allow-arbitrary-timeout-in-condition-wait.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00185-urllib2-honors-noproxy-for-ftp.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00187-add-RPATH-to-pyexpat.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00191-disable-NOOP.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00198-add-rewheel-module.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00224-PEP-493-Re-add-file-based-configuration-of-HTTPS-ver.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00351-cve-2019-20907-fix-infinite-loop-in-tarfile.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00354-cve-2020-26116-http-request-method-crlf-injection-in-httplib.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00355-CVE-2020-27619.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00357-CVE-2021-3177.patch
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/
-wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7.1-config.patch -O /tmp/python-2.7.1-config.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00001-pydocnogui.patch -O /tmp/00001-pydocnogui.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.5-cflags.patch -O /tmp/python-2.5-cflags.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.5.1-plural-fix.patch -O /tmp/python-2.5.1-plural-fix.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.5.1-sqlite-encoding.patch -O /tmp/python-2.5.1-sqlite-encoding.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7rc1-binutils-no-dep.patch -O /tmp/python-2.7rc1-binutils-no-dep.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7rc1-socketmodule-constants.patch -O /tmp/python-2.7rc1-socketmodule-constants.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.6-rpath.patch -O /tmp/python-2.6-rpath.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.6.4-distutils-rpath.patch -O /tmp/python-2.6.4-distutils-rpath.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00055-systemtap.patch -O /tmp/00055-systemtap.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7.3-lib64.patch -O /tmp/python-2.7.3-lib64.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7-lib64-sysconfig.patch -O /tmp/python-2.7-lib64-sysconfig.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00104-lib64-fix-for-test_install.patch -O /tmp/00104-lib64-fix-for-test_install.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00111-no-static-lib.patch -O /tmp/00111-no-static-lib.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7.3-debug-build.patch -O /tmp/python-2.7.3-debug-build.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00113-more-configuration-flags.patch -O /tmp/00113-more-configuration-flags.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00114-statvfs-f_flag-constants.patch -O /tmp/00114-statvfs-f_flag-constants.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00121-add-Modules-to-build-path.patch -O /tmp/00121-add-Modules-to-build-path.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/python-2.7.2-add-extension-suffix-to-python-config.patch -O /tmp/python-2.7.2-add-extension-suffix-to-python-config.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00131-disable-tests-in-test_io.patch -O /tmp/00131-disable-tests-in-test_io.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00132-add-rpmbuild-hooks-to-unittest.patch -O /tmp/00132-add-rpmbuild-hooks-to-unittest.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00133-skip-test_dl.patch -O /tmp/00133-skip-test_dl.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00135-skip-test-within-test_weakref-in-debug-build.patch -O /tmp/00135-skip-test-within-test_weakref-in-debug-build.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00136-skip-tests-of-seeking-stdin-in-rpmbuild.patch -O /tmp/00136-skip-tests-of-seeking-stdin-in-rpmbuild.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00137-skip-distutils-tests-that-fail-in-rpmbuild.patch -O /tmp/00137-skip-distutils-tests-that-fail-in-rpmbuild.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00138-fix-distutils-tests-in-debug-build.patch -O /tmp/00138-fix-distutils-tests-in-debug-build.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00139-skip-test_float-known-failure-on-arm.patch -O /tmp/00139-skip-test_float-known-failure-on-arm.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00140-skip-test_ctypes-known-failure-on-sparc.patch -O /tmp/00140-skip-test_ctypes-known-failure-on-sparc.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00142-skip-failing-pty-tests-in-rpmbuild.patch -O /tmp/00142-skip-failing-pty-tests-in-rpmbuild.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00143-tsc-on-ppc.patch -O /tmp/00143-tsc-on-ppc.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00144-no-gdbm.patch -O /tmp/00144-no-gdbm.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00146-hashlib-fips.patch -O /tmp/00146-hashlib-fips.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00147-add-debug-malloc-stats.patch -O /tmp/00147-add-debug-malloc-stats.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00155-avoid-ctypes-thunks.patch -O /tmp/00155-avoid-ctypes-thunks.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00156-gdb-autoload-safepath.patch -O /tmp/00156-gdb-autoload-safepath.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00165-crypt-module-salt-backport.patch -O /tmp/00165-crypt-module-salt-backport.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00167-disable-stack-navigation-tests-when-optimized-in-test_gdb.patch -O /tmp/00167-disable-stack-navigation-tests-when-optimized-in-test_gdb.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00169-avoid-implicit-usage-of-md5-in-multiprocessing.patch -O /tmp/00169-avoid-implicit-usage-of-md5-in-multiprocessing.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00170-gc-assertions.patch -O /tmp/00170-gc-assertions.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00173-workaround-ENOPROTOOPT-in-bind_port.patch -O /tmp/00173-workaround-ENOPROTOOPT-in-bind_port.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00174-fix-for-usr-move.patch -O /tmp/00174-fix-for-usr-move.patch
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00180-python-add-support-for-ppc64p7.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00181-allow-arbitrary-timeout-in-condition-wait.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00185-urllib2-honors-noproxy-for-ftp.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00187-add-RPATH-to-pyexpat.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00191-disable-NOOP.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00198-add-rewheel-module.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00224-PEP-493-Re-add-file-based-configuration-of-HTTPS-ver.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00351-cve-2019-20907-fix-infinite-loop-in-tarfile.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00354-cve-2020-26116-http-request-method-crlf-injection-in-httplib.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00355-CVE-2020-27619.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00357-CVE-2021-3177.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00359-CVE-2021-23336.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00366-CVE-2021-3733.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00368-CVE-2021-3737.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00372-CVE-2021-4189.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00377-CVE-2022-0391.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/00378-support-expat-2-4-5.patch -O /tmp/
+wget https://git.centos.org/rpms/python27-python/raw/c7/f/SOURCES/05000-autotool-intermediates.patch -O /tmp/
 cd /tmp/Python-$VERS
 patch -p1 </tmp/
 rm -rf /tmp/
